@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.Text;
 
-DateTime cedeBirth = new(year:2000,month:12,day:30);
+DateTime cedeBirth = new(year:2001,month:9,day:22);
 DateTime accountStart = new(year:2024,month:1,day:1);
 
-var peopleC = new Person() { FirstName = "Cedric", LastName = "Delval", BirthDate = cedeBirth};
-var peopleB = new Person() { FirstName = "Bastien", LastName = "Delval", BirthDate = cedeBirth};  // method with setter
+var peopleC = new Person() { FirstName = "Frederic", LastName = "Delvaux", BirthDate = cedeBirth};
+var peopleB = new Person() { FirstName = "Molie", LastName = "Delvaux", BirthDate = cedeBirth};  // method with setter
 // Person PeopleB = new("Ced", "Delval", cede_birth); // method with constructor
 
 var cAccount1 = new CurrentAccount() { Number = "1", Owner = peopleC, CreditLine = 5000};
@@ -19,7 +19,9 @@ sAccount1.Deposit(23000);
 var ifosupBank = new Bank() { Name = "ifosup"};
 
 ifosupBank.AddAccount("0",cAccount1);
+cAccount1.ApplyInterest();
 ifosupBank.AddAccount("1",sAccount1);
+sAccount1.ApplyInterest();
 
 Console.WriteLine(ifosupBank.GetSumOfPersonBalances(peopleC));
 Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleC));
@@ -46,7 +48,7 @@ public class Person
     // public Person() {} // strat for counter constructor with setter method
 }
 
-public class Account
+public abstract class Account
 {
     public required string Number {get;set;}
     public double Balance {get; private set;}
@@ -59,20 +61,43 @@ public class Account
     {
         this.Balance = Balance + amount;
     }
+    protected abstract double CalculInterest();
+    public virtual void ApplyInterest() 
+    {
+        this.Balance = Balance + CalculInterest();
+    }
 }
 
 public class CurrentAccount : Account
 {
     public double CreditLine {get;set;}
+    public const double interest_p = 0.03;
+    public const double interest_n = 9.75;
+    protected override double CalculInterest() 
+    {
+        if (this.Balance >= 0) 
+        {
+            return this.Balance * interest_p;
+        }
+        else
+        {
+            return this.Balance * interest_n;
+        }
+    }
 }
 
 public class SavingAccount : Account
 {
     public DateTime DateLastWithdraw {get;set;}
+    public const double interest = 0.045;
     public override void Withdraw (double amount) 
     {
         base.Withdraw(amount);
         this.DateLastWithdraw = DateTime.Today;
+    }
+    protected override double CalculInterest() 
+    {
+        return this.Balance * interest;
     }
 }
 
