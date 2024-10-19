@@ -76,6 +76,7 @@ public class CurrentAccount : Account
     public double CreditLine {get;set;}
     public const double interest_p = 0.03;
     public const double interest_n = 9.75;
+    
     protected override double CalculInterest() 
     {
         if (this.Balance >= 0) 
@@ -137,7 +138,7 @@ public class Bank
         }
         return sum;
     }
-    
+
     public string GetRegisterOfPersonAccount(Person Owner)
     {
         string view = "";
