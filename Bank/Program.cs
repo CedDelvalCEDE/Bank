@@ -9,9 +9,9 @@ var peopleC = new Person() { FirstName = "Ced", LastName = "Delval", BirthDate =
 
 public class Person 
 {
-    public string FirstName {get;set;}
-    public string LastName {get;set;}
-    public DateTime BirthDate {get;set;}
+    public required string FirstName {get;set;}
+    public required string LastName {get;set;}
+    public required DateTime BirthDate {get;set;}
 
     // access type name { access get; access set;}
     
@@ -26,9 +26,9 @@ public class Person
 
 public class Account
 {
-    public string Number {get;set;}
+    public required string Number {get;set;}
     public double Balance {get; private set;}
-    public Person Owner {get;set;}
+    public required Person Owner {get;set;}
     public virtual void Withdraw (double amount) 
     {
         this.Balance = Balance - amount;
@@ -46,28 +46,19 @@ public class CurrentAccount : Account
 
 public class SavingAccount : Account
 {
-    public DateTime DateLastWithdraw;
+    public DateTime DateLastWithdraw {get;set;}
 }
 
 public class Bank
 {
     public Dictionary<string, Account> Accounts {get;}
-    public string Name {get;set;}
+    public required string Name {get;set;}
     public void AddAccount(string number, Account account) 
     {
-        Accounts.Add(number, account);
+            Accounts.Add(number, account);
     }
     public void DeleteAccount(string number)
     {
         Accounts.Remove(number);
     }
 }
-/*
-3. Créer une classe « Bank » pour gérer les comptes de la banque implémentant :
-• Les propriétés
-• Dictionary<string, Current> Accounts (lecture seule)
-• string Name
-• Les méthodes :
-• void AddAccount(Current account)
-• void DeleteAccount(string number)
-*/
