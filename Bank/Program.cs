@@ -15,6 +15,7 @@ var cAccount2 = new CurrentAccount() { Number = "3", Owner = peopleB, CreditLine
 
 cAccount1.Deposit(5000);
 sAccount1.Deposit(23000);
+cAccount2.Deposit(5000);
 
 var ifosupBank = new Bank() { Name = "ifosup"};
 
@@ -22,9 +23,11 @@ ifosupBank.AddAccount("0",cAccount1);
 cAccount1.ApplyInterest();
 ifosupBank.AddAccount("1",sAccount1);
 sAccount1.ApplyInterest();
+ifosupBank.AddAccount("2",cAccount2);
 
 Console.WriteLine(ifosupBank.GetSumOfPersonBalances(peopleC));
 Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleC));
+Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleB));
 
 public class Person 
 {
@@ -37,7 +40,7 @@ public class Person
         return $"{FirstName} {LastName}";
     }
 
-    // access type name { access get; access set;}
+    // access [abstrat, virtual, override] type name { access get; access set;}
 
     // public Person(string firstName, string lastName, DateTime birthDate) // usual constructor
     // {
@@ -76,7 +79,7 @@ public class CurrentAccount : Account
     public double CreditLine {get;set;}
     public const double interest_p = 0.03;
     public const double interest_n = 9.75;
-    
+
     protected override double CalculInterest() 
     {
         if (this.Balance >= 0) 
