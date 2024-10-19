@@ -24,23 +24,44 @@ public class Person
     // public Person() {} // strat for counter constructor with setter method
 }
 
-public class CurrentAccount 
+public class Account
 {
     public string Number {get;set;}
-    public double Balance {get;}
-    public double CreditLine {get;set;}
+    public double Balance {get; private set;}
     public Person Owner {get;set;}
-
-    public void Withdraw (double amount)
+    public virtual void Withdraw (double amount) 
     {
-        CreditLine = CreditLine - amount;
+        this.Balance = Balance - amount;
     }
-    public void Deposit (double amount)
+    public virtual void Deposit (double amount) 
     {
-        CreditLine = CreditLine + amount;
+        this.Balance = Balance + amount;
     }
 }
 
+public class CurrentAccount : Account
+{
+    public double CreditLine {get;set;}
+}
+
+public class SavingAccount : Account
+{
+    public DateTime DateLastWithdraw;
+}
+
+public class Bank
+{
+    public Dictionary<string, Account> Accounts {get;}
+    public string Name {get;set;}
+    public void AddAccount(string number, Account account) 
+    {
+        Accounts.Add(number, account);
+    }
+    public void DeleteAccount(string number)
+    {
+        Accounts.Remove(number);
+    }
+}
 /*
 3. Créer une classe « Bank » pour gérer les comptes de la banque implémentant :
 • Les propriétés
