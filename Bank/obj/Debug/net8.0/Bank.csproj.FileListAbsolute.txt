@@ -1,0 +1,15 @@
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\bin\Debug\net8.0\Bank.exe
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\bin\Debug\net8.0\Bank.deps.json
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\bin\Debug\net8.0\Bank.runtimeconfig.json
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\bin\Debug\net8.0\Bank.dll
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\bin\Debug\net8.0\Bank.pdb
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.AssemblyInfoInputs.cache
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.AssemblyInfo.cs
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.csproj.CoreCompileInputs.cache
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.sourcelink.json
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.dll
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\refint\Bank.dll
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.pdb
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\Bank.genruntimeconfig.cache
+C:\Users\guste\Documents\CEDE\second year\Progra Objet\Bank\Bank\obj\Debug\net8.0\ref\Bank.dll
