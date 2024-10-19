@@ -1,0 +1,10 @@
+{
+    "name": "guste/bank",
+    "authors": [
+        {
+            "name": "guste",
+            "email": "gusterdehui@gmail.com"
+        }
+    ],
+    "require": {}
+}
