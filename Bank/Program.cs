@@ -53,6 +53,7 @@ public abstract class Account
     public required string Number {get;set;}
     public double Balance {get; private set;}
     public required Person Owner {get;set;}
+
     public virtual void Withdraw (double amount) 
     {
         this.Balance = Balance - amount;
@@ -61,7 +62,9 @@ public abstract class Account
     {
         this.Balance = Balance + amount;
     }
+
     protected abstract double CalculInterest();
+
     public virtual void ApplyInterest() 
     {
         this.Balance = Balance + CalculInterest();
@@ -90,11 +93,13 @@ public class SavingAccount : Account
 {
     public DateTime DateLastWithdraw {get;set;}
     public const double interest = 0.045;
+
     public override void Withdraw (double amount) 
     {
         base.Withdraw(amount);
         this.DateLastWithdraw = DateTime.Today;
     }
+
     protected override double CalculInterest() 
     {
         return this.Balance * interest;
@@ -105,18 +110,22 @@ public class Bank
 {
     public Dictionary<string, Account> Accounts {get; private set;} = new Dictionary<string, Account>();
     public required string Name {get;set;}
+
     public void AddAccount(string number, Account account) 
     {
         Accounts.Add(number, account);
     }
+
     public void DeleteAccount(string number)
     {
         Accounts.Remove(number);
     }
+
     public double GetBalance(string number)
     {
         return Accounts[number].Balance;
     }
+
     public double GetSumOfPersonBalances(Person Owner)
     {
         double sum = 0;
@@ -128,6 +137,7 @@ public class Bank
         }
         return sum;
     }
+    
     public string GetRegisterOfPersonAccount(Person Owner)
     {
         string view = "";
