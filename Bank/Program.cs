@@ -2,11 +2,12 @@
 using System.Globalization;
 using System.Text;
 
-DateTime cedeBirth = new(year:2001,month:9,day:22);
+DateTime fedeBirth = new(year:2001,month:9,day:22);
+DateTime modeBirth = new(year:1995,month:7,day:14);
 DateTime accountStart = new(year:2024,month:1,day:1);
 
-var peopleC = new Person() { FirstName = "Frederic", LastName = "Delvaux", BirthDate = cedeBirth};
-var peopleB = new Person() { FirstName = "Molie", LastName = "Delvaux", BirthDate = cedeBirth};  // method with setter
+var peopleC = new Person() { FirstName = "Frederic", LastName = "Delvaux", BirthDate = fedeBirth};
+var peopleB = new Person() { FirstName = "Molie", LastName = "Delvaux", BirthDate = modeBirth};  // method with setter
 // Person PeopleB = new("Ced", "Delval", cede_birth); // method with constructor
 
 var cAccount1 = new CurrentAccount() { Number = "1", Owner = peopleC, CreditLine = 5000};
