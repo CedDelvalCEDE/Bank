@@ -72,10 +72,26 @@ public abstract class Account : IBankAccount
     public double Balance {get; private set;}
     public required Person Owner {get;set;}
 
+    public Account() {}
+
+    public Account(string number, Person owner) : this()
+    {
+        this.Number = number;
+        this.Owner = owner;
+    }
+
+    public Account(string number, double balance, Person owner) : this()
+    {
+        this.Number = number;
+        this.Balance = balance;
+        this.Owner = owner;
+    }
+
     public virtual void Withdraw (double amount) 
     {
         this.Balance = Balance - amount;
     }
+
     public virtual void Deposit (double amount) 
     {
         this.Balance = Balance + amount;
@@ -95,6 +111,18 @@ public class CurrentAccount : Account
     public const double interest_p = 0.03;
     public const double interest_n = 9.75;
 
+    public CurrentAccount() {}
+
+    public CurrentAccount(string number, Person owner, double creditLine) : base(number, owner) 
+    {
+        this.CreditLine = creditLine;
+    }
+
+    public CurrentAccount(string number, double balance, Person owner, double creditLine) : base(number, balance, owner) 
+    {
+        this.CreditLine = creditLine;
+    }
+
     protected override double CalculInterest() 
     {
         if (this.Balance >= 0) 
@@ -112,6 +140,18 @@ public class SavingAccount : Account
 {
     public DateTime DateLastWithdraw {get;set;}
     public const double interest = 0.045;
+
+    public SavingAccount() {}
+
+    public SavingAccount(string number, Person owner) : base(number, owner) 
+    {
+
+    }
+
+    public SavingAccount(string number, double balance, Person owner, DateTime dateLastWithdraw) : base(number, balance, owner) 
+    {
+        this.DateLastWithdraw = dateLastWithdraw;
+    }
 
     public override void Withdraw (double amount) 
     {
