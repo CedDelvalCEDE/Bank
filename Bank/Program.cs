@@ -52,7 +52,21 @@ public class Person
     // public Person() {} // strat for counter constructor with setter method
 }
 
-public abstract class Account
+public interface IAccount
+{
+    public double Balance {get;}
+    public void Deposit(double amount);
+    public void Withdraw(double amount);
+}
+
+public interface IBankAccount : IAccount
+{
+    public void ApplyInterest();
+    public string Number {get;}
+    public Person Owner {get;}
+}
+
+public abstract class Account : IBankAccount
 {
     public required string Number {get;set;}
     public double Balance {get; private set;}

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj": {}
+    "c:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj": {}
   },
   "projects": {
-    "C:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj": {
+    "c:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj",
+        "projectUniqueName": "c:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj",
         "projectName": "Bank",
-        "projectPath": "C:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj",
+        "projectPath": "c:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\Bank.csproj",
         "packagesPath": "C:\\Users\\guste\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\obj\\",
+        "outputPath": "c:\\Users\\guste\\Documents\\CEDE\\second year\\Progra Objet\\Bank\\Bank\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\guste\\AppData\\Roaming\\NuGet\\NuGet.Config"
