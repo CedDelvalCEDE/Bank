@@ -6,13 +6,12 @@ DateTime fedeBirth = new(year:2001,month:9,day:22);
 DateTime modeBirth = new(year:1995,month:7,day:14);
 DateTime accountStart = new(year:2024,month:1,day:1);
 
-var peopleC = new Person() { FirstName = "Frederic", LastName = "Delvaux", BirthDate = fedeBirth};
-var peopleB = new Person() { FirstName = "Molie", LastName = "Delvaux", BirthDate = modeBirth};  // method with setter
-// Person PeopleB = new("Ced", "Delval", fedeBirth); // method with constructor
+var peopleC = new Person("Frederic", "Delvaux", fedeBirth); // { FirstName = "Frederic", LastName = "Delvaux", BirthDate = fedeBirth};
+var peopleB = new Person("Molie", "Delvaux", modeBirth); // { FirstName = "Molie", LastName = "Delvaux", BirthDate = modeBirth};  // method with setter
 
-var cAccount1 = new CurrentAccount() { Number = "1", Owner = peopleC, CreditLine = 5000};
-var sAccount1 = new SavingAccount() { Number = "2", Owner = peopleC, DateLastWithdraw = accountStart};
-var cAccount2 = new CurrentAccount() { Number = "3", Owner = peopleB, CreditLine = 5000};
+var cAccount1 = new CurrentAccount("1", peopleC, 5000); // { Number = "1", Owner = peopleC, CreditLine = 5000};
+var sAccount1 = new SavingAccount("2", 25000, peopleC,  accountStart); // { Number = "2", Owner = peopleC, DateLastWithdraw = accountStart};
+var cAccount2 = new CurrentAccount("3", peopleB, 5000); // { Number = "3", Owner = peopleB, CreditLine = 5000};
 
 cAccount1.Deposit(5000);
 sAccount1.Deposit(23000);
@@ -34,27 +33,28 @@ Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleB));
 
 public class Person 
 {
-    public required string FirstName {get;set;}
-    public required string LastName {get;set;}
-    public required DateTime BirthDate {get;set;}
+    public string FirstName {get; private set;}
+    public string LastName {get; private set;}
+    public DateTime BirthDate {get; private set;}
 
     public override string ToString()
     {
         return $"{FirstName} {LastName}";
     }
 
-    public Person(string firstName, string lastName, DateTime birthDate) : this() // usual constructor
+    // public Person() {} // default constructor with setter method
+
+    public Person(string firstName, string lastName, DateTime birthDate) // usual constructor
     {
         this.FirstName = firstName;
         this.LastName = lastName;
         this.BirthDate = birthDate;
     }
-    public Person() {} // default constructor with setter method
 }
 
 public interface IAccount
 {
-    public double Balance {get;}
+    // public double Balance;
     public void Deposit(double amount);
     public void Withdraw(double amount);
 }
@@ -62,15 +62,15 @@ public interface IAccount
 public interface IBankAccount : IAccount
 {
     public void ApplyInterest();
-    public string Number {get;}
-    public Person Owner {get;}
+    // public string Number;
+    // public Person Owner;
 }
 
 public abstract class Account : IBankAccount
 {
-    public required string Number {get;set;}
+    public string Number {get; private set;}
     public double Balance {get; private set;}
-    public required Person Owner {get;set;}
+    public Person Owner {get; private set;}
 
     public Account() {}
 
@@ -85,6 +85,11 @@ public abstract class Account : IBankAccount
         this.Number = number;
         this.Balance = balance;
         this.Owner = owner;
+    }
+
+    public virtual double TakeBalance() 
+    {
+        return this.Balance;
     }
 
     public virtual void Withdraw (double amount) 
@@ -138,7 +143,7 @@ public class CurrentAccount : Account
 
 public class SavingAccount : Account
 {
-    public DateTime DateLastWithdraw {get;set;}
+    public DateTime DateLastWithdraw {get; private set;}
     public const double interest = 0.045;
 
     public SavingAccount() {}
