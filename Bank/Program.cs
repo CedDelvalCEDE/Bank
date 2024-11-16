@@ -4,13 +4,13 @@ using System.Text;
 
 DateTime fedeBirth = new(year:2001,month:9,day:22);
 DateTime modeBirth = new(year:1995,month:7,day:14);
-DateTime accountStart = new(year:2024,month:1,day:1);
+DateTime accountStart = new(year:2024,month:11,day:16);
 
 var peopleC = new Person("Frederic", "Delvaux", fedeBirth); // { FirstName = "Frederic", LastName = "Delvaux", BirthDate = fedeBirth};
 var peopleB = new Person("Molie", "Delvaux", modeBirth); // { FirstName = "Molie", LastName = "Delvaux", BirthDate = modeBirth};  // method with setter
 
 var cAccount1 = new CurrentAccount("1", peopleC, 5000); // { Number = "1", Owner = peopleC, CreditLine = 5000};
-var sAccount1 = new SavingAccount("2", 25000, peopleC,  accountStart); // { Number = "2", Owner = peopleC, DateLastWithdraw = accountStart};
+var sAccount1 = new SavingAccount("2", peopleC,  accountStart); // { Number = "2", Owner = peopleC, DateLastWithdraw = accountStart};
 var cAccount2 = new CurrentAccount("3", peopleB, 5000); // { Number = "3", Owner = peopleB, CreditLine = 5000};
 
 cAccount1.Deposit(5000);
@@ -31,11 +31,11 @@ Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleB));
 
 // access [abstrat, virtual, override] type name { access get; access set;}
 
-public class Person 
+public class Person(string firstName, string lastName, DateTime birthDate) 
 {
-    public string FirstName {get; private set;}
-    public string LastName {get; private set;}
-    public DateTime BirthDate {get; private set;}
+    public string FirstName {get; private set;} = firstName;
+    public string LastName {get; private set;} = lastName;
+    public DateTime BirthDate {get; private set;} = birthDate;
 
     public override string ToString()
     {
@@ -44,17 +44,17 @@ public class Person
 
     // public Person() {} // default constructor with setter method
 
-    public Person(string firstName, string lastName, DateTime birthDate) // usual constructor
-    {
-        this.FirstName = firstName;
-        this.LastName = lastName;
-        this.BirthDate = birthDate;
-    }
+    // public Person(string firstName, string lastName, DateTime birthDate) // usual constructor
+    // {
+    //     this.FirstName = firstName;
+    //     this.LastName = lastName;
+    //     this.BirthDate = birthDate;
+    // }
 }
 
 public interface IAccount
 {
-    // public double Balance;
+    public double Balance {get;}
     public void Deposit(double amount);
     public void Withdraw(double amount);
 }
@@ -62,52 +62,34 @@ public interface IAccount
 public interface IBankAccount : IAccount
 {
     public void ApplyInterest();
-    // public string Number;
-    // public Person Owner;
+    public string Number {get;}
+    public Person Owner {get;}
 }
 
-public abstract class Account : IBankAccount
+public abstract class Account(string number, Person owner) : IBankAccount
 {
-    public string Number {get; private set;}
+    public string Number {get; private set;} = number;
     public double Balance {get; private set;}
-    public Person Owner {get; private set;}
+    public Person Owner {get; private set;} = owner;
 
-    public Account() {}
+    // public Account(string number, Person owner) : this()
+    // {
+    //     this.Number = number;
+    //     this.Owner = owner;
+    // }
 
-    public Account(string number, Person owner) : this()
+    public Account(string number, double balance, Person owner) : this(number, owner)
     {
-        this.Number = number;
-        this.Owner = owner;
-    }
-
-    public Account(string number, double balance, Person owner) : this()
-    {
-        this.Number = number;
         this.Balance = balance;
-        this.Owner = owner;
     }
 
-    public virtual double TakeBalance() 
-    {
-        return this.Balance;
-    }
+    public virtual void Withdraw (double amount) => Balance -= amount;
 
-    public virtual void Withdraw (double amount) 
-    {
-        this.Balance = Balance - amount;
-    }
-
-    public virtual void Deposit (double amount) 
-    {
-        this.Balance = Balance + amount;
-    }
+    public virtual void Deposit (double amount)   => Balance += amount;
 
     protected abstract double CalculInterest();
 
-    public virtual void ApplyInterest() 
-    {
-        this.Balance = Balance + CalculInterest();
-    }
+    public virtual void ApplyInterest()  => Balance += CalculInterest();
 }
 
 public class CurrentAccount : Account
@@ -116,7 +98,7 @@ public class CurrentAccount : Account
     public const double interest_p = 0.03;
     public const double interest_n = 9.75;
 
-    public CurrentAccount() {}
+    public CurrentAccount(string number, Person owner): base(number, owner) {}
 
     public CurrentAccount(string number, Person owner, double creditLine) : base(number, owner) 
     {
@@ -128,7 +110,7 @@ public class CurrentAccount : Account
         this.CreditLine = creditLine;
     }
 
-    protected override double CalculInterest() 
+    protected override double CalculInterest()
     {
         if (this.Balance >= 0) 
         {
@@ -146,11 +128,12 @@ public class SavingAccount : Account
     public DateTime DateLastWithdraw {get; private set;}
     public const double interest = 0.045;
 
-    public SavingAccount() {}
 
-    public SavingAccount(string number, Person owner) : base(number, owner) 
+    public SavingAccount(string number, Person owner) : base(number, owner) {}
+
+    public SavingAccount(string number, Person owner, DateTime dateLastWithdraw) : base(number, owner) 
     {
-
+        this.DateLastWithdraw = dateLastWithdraw;
     }
 
     public SavingAccount(string number, double balance, Person owner, DateTime dateLastWithdraw) : base(number, balance, owner) 
@@ -175,15 +158,9 @@ public class Bank
     public Dictionary<string, Account> Accounts {get; private set;} = new Dictionary<string, Account>();
     public required string Name {get;set;}
 
-    public void AddAccount(string number, Account account) 
-    {
-        Accounts.Add(number, account);
-    }
+    public void AddAccount(string number, Account account) => Accounts.Add(number, account);
 
-    public void DeleteAccount(string number)
-    {
-        Accounts.Remove(number);
-    }
+    public void DeleteAccount(string number) => Accounts.Remove(number);
 
     public double GetBalance(string number)
     {
