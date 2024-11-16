@@ -8,7 +8,7 @@ DateTime accountStart = new(year:2024,month:1,day:1);
 
 var peopleC = new Person() { FirstName = "Frederic", LastName = "Delvaux", BirthDate = fedeBirth};
 var peopleB = new Person() { FirstName = "Molie", LastName = "Delvaux", BirthDate = modeBirth};  // method with setter
-// Person PeopleB = new("Ced", "Delval", cede_birth); // method with constructor
+// Person PeopleB = new("Ced", "Delval", fedeBirth); // method with constructor
 
 var cAccount1 = new CurrentAccount() { Number = "1", Owner = peopleC, CreditLine = 5000};
 var sAccount1 = new SavingAccount() { Number = "2", Owner = peopleC, DateLastWithdraw = accountStart};
@@ -30,6 +30,8 @@ Console.WriteLine(ifosupBank.GetSumOfPersonBalances(peopleC));
 Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleC));
 Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleB));
 
+// access [abstrat, virtual, override] type name { access get; access set;}
+
 public class Person 
 {
     public required string FirstName {get;set;}
@@ -41,15 +43,13 @@ public class Person
         return $"{FirstName} {LastName}";
     }
 
-    // access [abstrat, virtual, override] type name { access get; access set;}
-
-    // public Person(string firstName, string lastName, DateTime birthDate) // usual constructor
-    // {
-    //     this.FirstName = firstName;
-    //     this.LastName = lastName;
-    //     this.BirthDate = birthDate;
-    // }
-    // public Person() {} // strat for counter constructor with setter method
+    public Person(string firstName, string lastName, DateTime birthDate) : this() // usual constructor
+    {
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.BirthDate = birthDate;
+    }
+    public Person() {} // default constructor with setter method
 }
 
 public interface IAccount
