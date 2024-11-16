@@ -30,6 +30,7 @@ Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleC));
 Console.WriteLine(ifosupBank.GetRegisterOfPersonAccount(peopleB));
 
 // access [abstrat, virtual, override] type name { access get; access set;}
+// try {instruction} catch(exceptionName ex) {treat the bug} finally {is execute in any case}
 
 public class Person(string firstName, string lastName, DateTime birthDate) 
 {
@@ -66,6 +67,14 @@ public interface IBankAccount : IAccount
     public Person Owner {get;}
 }
 
+public class InsufficientBalanceException : Exception
+{
+    public InsufficientBalanceException(string message): base(message)
+    {
+        Console.WriteLine(message);
+    }
+}
+
 public abstract class Account(string number, Person owner) : IBankAccount
 {
     public string Number {get; private set;} = number;
@@ -83,9 +92,15 @@ public abstract class Account(string number, Person owner) : IBankAccount
         this.Balance = balance;
     }
 
-    public virtual void Withdraw (double amount) => Balance -= amount;
+    public virtual void Withdraw (double amount)
+    {
+        this.Balance = amount > Balance ? this.Balance - amount : throw new InsufficientBalanceException("The amount is superior to the balance.");
+    }
 
-    public virtual void Deposit (double amount)   => Balance += amount;
+    public virtual void Deposit (double amount)
+    {
+        this.Balance = amount >= 0 ? this.Balance + amount : throw new ArgumentOutOfRangeException();
+    }
 
     protected abstract double CalculInterest();
 
@@ -102,7 +117,7 @@ public class CurrentAccount : Account
 
     public CurrentAccount(string number, Person owner, double creditLine) : base(number, owner) 
     {
-        this.CreditLine = creditLine;
+        this.CreditLine = creditLine >= 0 ? creditLine: throw new ArgumentOutOfRangeException();
     }
 
     public CurrentAccount(string number, double balance, Person owner, double creditLine) : base(number, balance, owner) 
