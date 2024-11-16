@@ -9,13 +9,25 @@ DateTime accountStart = new(year:2024,month:11,day:16);
 var peopleC = new Person("Frederic", "Delvaux", fedeBirth); // { FirstName = "Frederic", LastName = "Delvaux", BirthDate = fedeBirth};
 var peopleB = new Person("Molie", "Delvaux", modeBirth); // { FirstName = "Molie", LastName = "Delvaux", BirthDate = modeBirth};  // method with setter
 
-var cAccount1 = new CurrentAccount("1", peopleC, 5000); // { Number = "1", Owner = peopleC, CreditLine = 5000};
+var cAccount1 = new CurrentAccount("1", peopleC, 2000); // { Number = "1", Owner = peopleC, CreditLine = 2000};
 var sAccount1 = new SavingAccount("2", peopleC,  accountStart); // { Number = "2", Owner = peopleC, DateLastWithdraw = accountStart};
-var cAccount2 = new CurrentAccount("3", peopleB, 5000); // { Number = "3", Owner = peopleB, CreditLine = 5000};
+var cAccount2 = new CurrentAccount("3", peopleB, 2000); // { Number = "3", Owner = peopleB, CreditLine = 2000};
 
-cAccount1.Deposit(5000);
-sAccount1.Deposit(23000);
-cAccount2.Deposit(5000);
+try 
+{
+    cAccount1.Deposit(5000);
+    sAccount1.Deposit(23000);
+    cAccount2.Deposit(5000);
+}
+catch (InsufficientBalanceException)
+{
+    Console.WriteLine("solde inférieur au retrait.");
+}
+catch (ArgumentOutOfRangeException)
+{
+    Console.WriteLine("Depot inférieur à zero.");
+}
+
 
 var ifosupBank = new Bank() { Name = "ifosup"};
 
@@ -69,17 +81,37 @@ public interface IBankAccount : IAccount
 
 public class InsufficientBalanceException : Exception
 {
+
     public InsufficientBalanceException(string message): base(message)
     {
         Console.WriteLine(message);
     }
 }
 
+public delegate void NegativeBalanceDelegate(object sender, EventArgs e);
+
 public abstract class Account(string number, Person owner) : IBankAccount
 {
     public string Number {get; private set;} = number;
-    public double Balance {get; private set;}
+    public double Balance {get;set;} // TODO functionnal event with set reaction.
+    // {
+    //     get
+    //     { 
+    //         return Balance;
+    //     }
+    //     protected set
+    //     {
+    //         Balance = value;
+    //         // if (value < 0)
+    //         // {
+    //         //     NegativeBalanceEventSend();
+    //         // }
+    //     }
+    // } // = 0;
     public Person Owner {get; private set;} = owner;
+    public event NegativeBalanceDelegate? NegativeBalanceEvent;
+
+    protected virtual void NegativeBalanceEventSend() => NegativeBalanceEvent?.Invoke(this,EventArgs.Empty);
 
     // public Account(string number, Person owner) : this()
     // {
@@ -94,7 +126,7 @@ public abstract class Account(string number, Person owner) : IBankAccount
 
     public virtual void Withdraw (double amount)
     {
-        this.Balance = amount > Balance ? this.Balance - amount : throw new InsufficientBalanceException("The amount is superior to the balance.");
+        this.Balance = amount < this.Balance ? this.Balance - amount : throw new InsufficientBalanceException("The amount is superior to the balance.");
     }
 
     public virtual void Deposit (double amount)
@@ -173,9 +205,23 @@ public class Bank
     public Dictionary<string, Account> Accounts {get; private set;} = new Dictionary<string, Account>();
     public required string Name {get;set;}
 
-    public void AddAccount(string number, Account account) => Accounts.Add(number, account);
+    public void AddAccount(string number, Account account) 
+    {
+        account.NegativeBalanceEvent += this.NegativeBalanceAction;
+        Accounts.Add(number, account);
+    }
 
     public void DeleteAccount(string number) => Accounts.Remove(number);
+
+    public void NegativeBalanceAction(object sender, EventArgs e)
+    {
+        foreach (KeyValuePair<string, Account> account in Accounts) {
+            if (account.Value == sender)
+            {
+                Console.WriteLine($"the number account {account.Key} is now in negative.");
+            }
+        }
+    }
 
     public double GetBalance(string number)
     {
